@@ -2,19 +2,20 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { useCallback, useEffect } from 'react';
 import {
   IconBrandAngular,
+  IconBrandFigma,
+  IconBrandGithub,
+  IconBrandHtml5,
   IconBrandJavascript,
   IconBrandNextjs,
   IconBrandReact,
   IconBrandTailwind,
   IconBrandTypescript,
 } from '@tabler/icons-react';
-import CircularGallery from '../CircularGallery';
 import LineSidebar from '../LineSidebar';
 import { LogoLoop } from '../LogoLoop';
 import Masonry from '../Masonry';
-import { aboutImages, aboutMenuItems, aboutPanels, careerProjects, careerTimeline } from '../portfolioData';
+import { aboutImages, aboutMenuItems, aboutPanels, careerTimeline } from '../portfolioData';
 import RotatingText from '../RotatingText';
-import ShapeGrid from '../ShapeGrid';
 
 const frontendTechnologies = [
   { id: 'react', icon: <IconBrandReact className="size-6" /> },
@@ -22,17 +23,22 @@ const frontendTechnologies = [
   { id: 'angular', icon: <IconBrandAngular className="size-6" /> },
   { id: 'typescript', icon: <IconBrandTypescript className="size-6" /> },
   { id: 'javascript', icon: <IconBrandJavascript className="size-6" /> },
-  { id: 'tailwind', icon: <IconBrandTailwind className="size-6" /> },
+  { id: 'github', icon: <IconBrandGithub className="size-6" /> },
+  { id: 'figma', icon: <IconBrandFigma className="size-6" /> },
+  { id: 'html', icon: <IconBrandHtml5  className="size-6" /> },
 ];
 
 function CareerTimeline() {
   return (
-    <div className="min-w-0">
+    <div className="min-w-0 w-full">
       <LogoLoop items={frontendTechnologies} ariaLabel="Tecnologias de frontend" />
       <div className="mt-7 sm:mt-8">
-        <ol className="grid gap-y-7 sm:gap-y-9">
+        <ol className="grid grid-cols-2 gap-x-5 gap-y-7 sm:gap-x-8 sm:gap-y-9 lg:grid-cols-4 lg:gap-x-0 lg:gap-y-0">
           {careerTimeline.map((job, index) => (
-            <li key={job.company} className="relative flex min-h-44 flex-col border-t-2 border-zinc-950 pt-6 sm:min-h-48 sm:pt-7">
+            <li
+              key={job.company}
+              className="relative flex min-h-44 flex-col border-t-2 border-zinc-950 pt-6 sm:min-h-48 sm:pt-7 lg:min-h-56 lg:px-5 lg:first:pl-0 lg:last:pr-0"
+            >
               <span className="absolute left-0 top-0 block size-5 -translate-y-1/2 border-2 border-zinc-950 bg-zinc-100" aria-hidden="true">
                 <span className={`absolute inset-0 m-auto block size-2 ${index === 0 ? 'bg-zinc-950' : 'bg-zinc-400'}`} />
               </span>
@@ -44,28 +50,6 @@ function CareerTimeline() {
           ))}
         </ol>
       </div>
-    </div>
-  );
-}
-
-function CareerShowcase({ reduced }: { reduced: boolean | null }) {
-  return (
-    <div className="flex h-full min-h-0 items-center justify-end">
-      <section className="relative aspect-square w-full max-w-[20rem] overflow-hidden rounded-xl border-2 border-zinc-950 bg-zinc-950 text-zinc-100" aria-label="Projetos selecionados">
-        <div className="absolute inset-0 opacity-80" aria-hidden="true">
-          <ShapeGrid animated={!reduced} borderColor="#3f3f46" hoverFillColor="#52525b" hoverTrailAmount={5} speed={0.18} squareSize={42} />
-        </div>
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-center justify-between border-b border-zinc-700 bg-zinc-950/90 px-4 py-3 text-[10px] font-bold tracking-[0.1em] text-zinc-300 sm:px-5">
-          <span>SELECTED PROJECTS</span>
-          <span>DRAG / SCROLL</span>
-        </div>
-        <div className="absolute inset-x-0 bottom-0 z-10 border-t border-zinc-700 bg-zinc-950/90 px-4 py-3 text-[10px] font-bold tracking-[0.1em] text-zinc-400 sm:px-5">
-          05 CASE STUDIES
-        </div>
-        <div className="absolute inset-0 z-[1] px-4 pb-10 pt-11 sm:px-5 sm:pb-11 sm:pt-12">
-          <CircularGallery items={careerProjects} reducedMotion={Boolean(reduced)} />
-        </div>
-      </section>
     </div>
   );
 }
@@ -120,10 +104,6 @@ function AboutVisual({ kind, reduced }: { kind: string; reduced: boolean | null 
     );
   }
 
-  if (kind === 'career') {
-    return <CareerShowcase reduced={reduced} />;
-  }
-
   if (kind === 'signal') {
     return (
       <div className="grid h-full min-h-0 content-center gap-3 rounded-2xl bg-zinc-950 p-4 text-zinc-100 mix-blend-multiply sm:p-5">
@@ -141,19 +121,6 @@ function AboutVisual({ kind, reduced }: { kind: string; reduced: boolean | null 
       </div>
     );
   }
-
-  return (
-    <div className="flex h-full min-h-0 flex-col justify-center rounded-2xl bg-zinc-950 p-5 text-zinc-100 mix-blend-multiply">
-      <div className="grid grid-cols-2 gap-3">
-        {['Night walks', 'Street rhythm', 'Long talks', 'Small details'].map((item, index) => (
-          <div key={item} className="min-h-28 rounded-xl bg-zinc-100/90 p-4 text-zinc-950 opacity-90 blur-[0.2px]">
-            <span className="block text-xs font-bold text-zinc-500">{String(index + 1).padStart(2, '0')}</span>
-            <span className="mt-8 block text-sm font-bold leading-tight">{item}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
 }
 
 function AboutSection({
@@ -239,7 +206,7 @@ function AboutSection({
           </div>
         </div>
 
-        <div className="relative min-h-0 overflow-visible">
+        <div className={`relative min-h-0 overflow-visible ${panel.id === 'career' ? 'lg:col-span-2' : ''}`}>
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={panel.id}
@@ -279,26 +246,28 @@ function AboutSection({
           </AnimatePresence>
         </div>
 
-        <div className="relative h-full min-h-0 overflow-visible pt-4 sm:pt-5 lg:pl-6 lg:pt-0 xl:pl-8">
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
-              key={`${panel.id}-visual`}
-              initial={reduced ? false : { opacity: 0, y: direction * 28, scale: 0.985, filter: 'blur(12px)' }}
-              animate={
-                reduced
-                  ? { opacity: 1 }
-                  : isActive
-                    ? { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }
-                    : { opacity: 0, y: direction * 28, scale: 0.985, filter: 'blur(12px)' }
-              }
-              exit={reduced ? { opacity: 0 } : { opacity: 0, y: direction * -20, scale: 0.99, filter: 'blur(8px)' }}
-              transition={{ duration: 0.52, ease: [0.16, 1, 0.3, 1] }}
-              className="h-full min-h-0"
-            >
-              <AboutVisual kind={panel.visual} reduced={reduced} />
-            </motion.div>
-          </AnimatePresence>
-        </div>
+        {panel.id !== 'career' && (
+          <div className="relative h-full min-h-0 overflow-visible pt-4 sm:pt-5 lg:pl-6 lg:pt-0 xl:pl-8">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={`${panel.id}-visual`}
+                initial={reduced ? false : { opacity: 0, y: direction * 28, scale: 0.985, filter: 'blur(12px)' }}
+                animate={
+                  reduced
+                    ? { opacity: 1 }
+                    : isActive
+                      ? { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }
+                      : { opacity: 0, y: direction * 28, scale: 0.985, filter: 'blur(12px)' }
+                }
+                exit={reduced ? { opacity: 0 } : { opacity: 0, y: direction * -20, scale: 0.99, filter: 'blur(8px)' }}
+                transition={{ duration: 0.52, ease: [0.16, 1, 0.3, 1] }}
+                className="h-full min-h-0"
+              >
+                <AboutVisual kind={panel.visual} reduced={reduced} />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        )}
       </div>
     </section>
   );
