@@ -3,9 +3,8 @@ import Masonry from '../../Masonry';
 import { aboutImages, type aboutPanels } from '../../portfolioData';
 
 type AboutPanel = (typeof aboutPanels)[number];
-type PortraitStatus = 'loading' | 'ready' | 'error';
 
-function AboutPortrait({ status }: { status: PortraitStatus }) {
+function AboutPortrait() {
   return (
     <figure className="relative h-full min-h-36 overflow-hidden border-2 border-zinc-950 bg-zinc-950 sm:min-h-44 lg:min-h-0">
       <div
@@ -17,14 +16,12 @@ function AboutPortrait({ status }: { status: PortraitStatus }) {
         className="absolute bottom-[5%] left-[4%] right-[12%] top-[3%] overflow-hidden bg-zinc-800"
         style={{ clipPath: 'polygon(0 13%, 18% 0, 100% 0, 100% 87%, 79% 100%, 0 100%)' }}
       >
-        {status !== 'error' && (
-          <img
-            src="/about-portrait.jpeg"
-            alt="Vinicius Isumi em retrato preto e branco"
-            decoding="async"
-            className="h-full w-full object-cover object-[50%_28%] grayscale contrast-125 sm:object-[50%_24%] lg:object-[50%_center]"
-          />
-        )}
+        <img
+          src="/about-portrait.jpeg"
+          alt="Vinicius Isumi em retrato preto e branco"
+          decoding="async"
+          className="h-full w-full object-cover object-[50%_28%] grayscale contrast-125 sm:object-[50%_24%] lg:object-[50%_center]"
+        />
       </div>
       <div className="absolute left-[4%] top-[3%] bg-zinc-950 px-3 py-2 text-[10px] font-bold tracking-[0.14em] text-zinc-100 sm:text-xs">
         VINICIUS / ISUMI
@@ -34,8 +31,8 @@ function AboutPortrait({ status }: { status: PortraitStatus }) {
   );
 }
 
-function AboutVisual({ kind, portraitStatus }: { kind: AboutPanel['visual']; portraitStatus: PortraitStatus }) {
-  if (kind === 'portrait') return <AboutPortrait status={portraitStatus} />;
+function AboutVisual({ kind }: { kind: AboutPanel['visual'] }) {
+  if (kind === 'portrait') return <AboutPortrait />;
 
   if (kind === 'masonry') {
     return (
@@ -53,16 +50,13 @@ function AboutPanelVisual({
   direction,
   isActive,
   reduced,
-  portraitStatus,
 }: {
   panel: AboutPanel;
   direction: number;
   isActive: boolean;
   reduced: boolean | null;
-  portraitStatus: PortraitStatus;
 }) {
   const hasVisual = panel.id !== 'career';
-  const shouldHoldVisual = panel.visual === 'portrait' && portraitStatus === 'loading';
 
   return (
     <div className={`relative h-full min-h-0 overflow-visible pt-4 sm:pt-5 lg:pl-6 lg:pt-0 xl:pl-8 ${hasVisual ? '' : 'hidden'}`}>
@@ -74,17 +68,15 @@ function AboutPanelVisual({
             animate={
               reduced
                 ? { opacity: 1 }
-              : shouldHoldVisual
-                ? { opacity: 0, y: direction * 28, scale: 0.985, filter: 'blur(12px)' }
-                : isActive
-                  ? { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }
-                  : { opacity: 0, y: direction * 28, scale: 0.985, filter: 'blur(12px)' }
+              : isActive
+                ? { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }
+                : { opacity: 0, y: direction * 28, scale: 0.985, filter: 'blur(12px)' }
             }
             exit={reduced ? { opacity: 0 } : { opacity: 0, y: direction * -20, scale: 0.99, filter: 'blur(8px)' }}
             transition={{ duration: 0.52, ease: [0.16, 1, 0.3, 1] }}
             className="h-full min-h-0"
           >
-            <AboutVisual kind={panel.visual} portraitStatus={portraitStatus} />
+            <AboutVisual kind={panel.visual} />
           </motion.div>
         )}
       </AnimatePresence>

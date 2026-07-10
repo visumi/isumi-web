@@ -10,7 +10,17 @@ const MIN_COPIES = 2;
 const COPY_HEADROOM = 2;
 const SPEED = 28;
 
-function LogoLoop({ items, ariaLabel }: { items: LogoLoopItem[]; ariaLabel: string }) {
+function LogoLoop({
+  items,
+  ariaLabel,
+  className = '',
+  itemClassName = '',
+}: {
+  items: LogoLoopItem[];
+  ariaLabel: string;
+  className?: string;
+  itemClassName?: string;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const sequenceRef = useRef<HTMLUListElement>(null);
@@ -87,7 +97,7 @@ function LogoLoop({ items, ariaLabel }: { items: LogoLoopItem[]; ariaLabel: stri
           aria-hidden={copyIndex > 0}
         >
           {items.map((item) => (
-            <li key={`${item.id}-${copyIndex}`} className="grid size-7 shrink-0 place-items-center mr-7">
+            <li key={`${item.id}-${copyIndex}`} className={`mr-7 grid size-7 shrink-0 place-items-center ${itemClassName}`}>
               {item.icon}
             </li>
           ))}
@@ -99,7 +109,7 @@ function LogoLoop({ items, ariaLabel }: { items: LogoLoopItem[]; ariaLabel: stri
   return (
     <div
       ref={containerRef}
-      className="relative overflow-hidden py-1 [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]"
+      className={`relative min-w-0 w-full max-w-full overflow-hidden py-1 [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)] ${className}`}
       role="region"
       aria-label={ariaLabel}
     >

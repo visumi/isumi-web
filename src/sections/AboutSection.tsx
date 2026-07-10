@@ -1,5 +1,5 @@
 import { useReducedMotion } from 'motion/react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import LineSidebar from '../LineSidebar';
 import { aboutImages, aboutMenuItems, aboutPanels } from '../portfolioData';
 import { AboutPanelContent } from './about/AboutPanelContent';
@@ -17,7 +17,6 @@ function AboutSection({
   onPanelChange: (index: number) => void;
 }) {
   const reduced = useReducedMotion();
-  const [portraitStatus, setPortraitStatus] = useState<'loading' | 'ready' | 'error'>('loading');
 
   useEffect(() => {
     const preloadImages = () => {
@@ -31,34 +30,6 @@ function AboutSection({
 
     const timeout = window.setTimeout(preloadImages, 700);
     return () => window.clearTimeout(timeout);
-  }, []);
-
-  useEffect(() => {
-    let cancelled = false;
-    const image = new Image();
-
-    const setStatus = (status: 'ready' | 'error') => {
-      if (!cancelled) setPortraitStatus(status);
-    };
-
-    image.decoding = 'async';
-    image.onload = () => {
-      if (typeof image.decode !== 'function') {
-        setStatus('ready');
-        return;
-      }
-
-      void image.decode().then(
-        () => setStatus('ready'),
-        () => setStatus('ready'),
-      );
-    };
-    image.onerror = () => setStatus('error');
-    image.src = '/about-portrait.jpeg';
-
-    return () => {
-      cancelled = true;
-    };
   }, []);
 
   const updatePanel = useCallback(
@@ -98,27 +69,10 @@ function AboutSection({
           />
         </div>
       </div>
-      <div className="mx-auto grid h-full w-full max-w-[90rem] grid-rows-[auto_auto_minmax(0,1fr)] gap-3 px-5 py-5 sm:grid-rows-[auto_auto_minmax(0,1fr)] sm:gap-5 sm:px-8 sm:py-8 lg:grid-cols-[16rem_minmax(0,0.82fr)_minmax(0,1.18fr)] lg:grid-rows-1 lg:items-stretch lg:gap-8 lg:py-10 xl:grid-cols-[17rem_minmax(0,0.78fr)_minmax(0,1.22fr)]">
-        <div className="flex items-center justify-between gap-4 lg:block">
-          <div className="flex w-full gap-2 lg:hidden" aria-label="About sections">
-            {aboutMenuItems.map((item, index) => (
-              <button
-                key={item}
-                type="button"
-                onClick={() => updatePanel(index)}
-                aria-current={activePanel === index ? 'true' : undefined}
-                className={`min-h-10 flex-1 rounded-full px-3 text-xs font-bold transition-colors ${
-                  activePanel === index ? 'bg-zinc-950 text-zinc-100' : 'bg-zinc-200 text-zinc-600'
-                }`}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-        </div>
-
+      <div className="mx-auto grid h-full w-full max-w-[90rem] grid-rows-[auto_minmax(0,1fr)] gap-3 px-5 py-5 sm:grid-rows-[auto_minmax(0,1fr)] sm:gap-5 sm:px-8 sm:py-8 lg:grid-cols-[16rem_minmax(0,0.82fr)_minmax(0,1.18fr)] lg:grid-rows-1 lg:items-stretch lg:gap-8 lg:py-10 xl:grid-cols-[17rem_minmax(0,0.78fr)_minmax(0,1.22fr)]">
+        <div className="hidden lg:block" aria-hidden="true" />
         <AboutPanelContent panel={panel} direction={direction} isActive={isActive} reduced={reduced} />
-        <AboutPanelVisual panel={panel} direction={direction} isActive={isActive} reduced={reduced} portraitStatus={portraitStatus} />
+        <AboutPanelVisual panel={panel} direction={direction} isActive={isActive} reduced={reduced} />
       </div>
     </section>
   );

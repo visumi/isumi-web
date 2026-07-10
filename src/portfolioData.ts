@@ -115,26 +115,30 @@ const careerTimeline = [
   {
     company: 'PicPay',
     period: 'APR 2024 — NOW',
-    role: 'Engineer Frontend Senior',
-    detail: 'Building financial product experiences with React and Next.js, balancing dense workflows with interfaces that stay clear at speed.',
+    role: 'Senior Software Enginner',
+    mobileDetail: 'Leading Angular strategy, migrations, and design systems.',
+    detail: 'Currently acting as a Software Engineer with a strong focus on Angular, leading feature definition and technical direction, driving large-scale migrations and technology upgrades, and building scalable design systems. Actively contribute to team leadership, mentoring developers, and fostering strong engineering practices across the team.',
   },
   {
     company: 'Banco Original',
     period: 'DEC 2021 — MAY 2024',
-    role: 'Analista de Sistemas Pleno',
-    detail: 'Developed Angular applications and design-system foundations that brought consistency to complex banking journeys.',
+    role: 'Frontend Engineer',
+    mobileDetail: 'Built Java and Angular services in a microfrontend platform.',
+    detail: 'Worked as a Full Stack Engineer using Java and Angular within a microfrontend architecture, contributing to customer service chat systems, modernizing legacy applications, and designing and implementing scalable microservices in Java.',
   },
   {
     company: 'Enforce',
     period: 'SEP 2020 — DEC 2021',
-    role: 'Desenvolvedor web front-end',
-    detail: 'Created product interfaces in Angular, translating operational requirements into responsive tools for everyday decisions.',
+    role: 'Junior Frontend Engineer',
+    mobileDetail: 'Evolved an Angular platform for credit recovery operations.',
+    detail: 'Owned the maintenance and evolution of a large-scale Angular platform supporting credit recovery operations, contributing to demand planning, system orchestration, and continuous feature delivery.',
   },
   {
     company: 'LARCOM / UNICAMP',
     period: 'MAR 2020 — SEP 2020',
-    role: 'Desenvolvedor Netsuite',
-    detail: 'Supported NetSuite development with JavaScript and TypeScript, connecting academic research needs to practical systems.',
+    role: 'Intern',
+    mobileDetail: 'Built tailored NetSuite workflows with JavaScript and TypeScript.',
+    detail: 'Delivered custom NetSuite solutions using JavaScript and TypeScript, adapting the platform to support complex business workflows across multiple domains',
   },
 ] as const;
 

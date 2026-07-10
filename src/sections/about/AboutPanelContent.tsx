@@ -17,8 +17,8 @@ function AboutPanelContent({
   reduced: boolean | null;
 }) {
   return (
-    <div className={`relative min-h-0 overflow-visible ${panel.id === 'career' ? 'lg:col-span-2' : ''}`}>
-      <AnimatePresence mode="wait" initial={false}>
+    <div className={`relative min-h-0 min-w-0 overflow-visible ${panel.id === 'career' ? 'lg:col-span-2' : ''}`}>
+      <AnimatePresence mode="popLayout" initial={false}>
         <motion.div
           key={panel.id}
           initial={reduced ? false : { opacity: 0, x: direction * 36, filter: 'blur(10px)' }}
@@ -31,7 +31,7 @@ function AboutPanelContent({
           }
           exit={reduced ? { opacity: 0 } : { opacity: 0, x: direction * -24, filter: 'blur(8px)' }}
           transition={{ duration: 0.48, ease: [0.16, 1, 0.3, 1] }}
-          className="about-copy-column flex min-h-0 flex-col justify-start lg:h-full lg:justify-center"
+          className="about-copy-column flex min-h-0 min-w-0 flex-col justify-start lg:h-full lg:justify-center"
         >
           <span className="text-sm font-bold text-zinc-500">{panel.eyebrow}</span>
           <h2 className="about-title mt-4 text-balance text-3xl font-bold leading-none text-zinc-950 sm:mt-5 sm:text-5xl lg:text-5xl xl:text-6xl">
