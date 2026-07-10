@@ -183,20 +183,34 @@ function Reveal({
   );
 }
 
-function BrutalButton({
-  href,
-  children,
-}: {
-  href: string;
-  children: ReactNode;
-}) {
+const brutalButtonClassName =
+  'group inline-flex min-h-12 items-center gap-3 border-2 border-zinc-100 bg-zinc-100 px-5 py-3 text-sm font-bold text-zinc-950 transition-transform duration-300 ease-out cursor-pointer hover:bg-zinc-950 hover:text-zinc-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-zinc-100';
+
+function BrutalButton(props: { href: string; children: ReactNode } | { onClick: () => void; children: ReactNode }) {
+  if ('href' in props) {
+    return (
+      <a href={props.href} className={brutalButtonClassName}>
+        {props.children}
+      </a>
+    );
+  }
+
   return (
-    <a
-      href={href}
-      className="group inline-flex min-h-12 items-center gap-3 border-2 border-zinc-100 bg-zinc-100 px-5 py-3 text-sm font-bold text-zinc-950 transition-transform duration-300 ease-out hover:bg-zinc-950 hover:text-zinc-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-zinc-100"
+    <button type="button" onClick={props.onClick} className={brutalButtonClassName}>
+      {props.children}
+    </button>
+  );
+}
+
+function OutlineButton({ onClick, children }: { onClick: () => void; children: ReactNode }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="inline-flex min-h-12 items-center gap-3 border-2 border-zinc-500 px-5 py-3 text-sm font-bold text-zinc-100 transition-colors duration-300 cursor-pointer hover:border-zinc-100 hover:bg-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-zinc-100"
     >
       {children}
-    </a>
+    </button>
   );
 }
 
@@ -532,23 +546,8 @@ function App() {
                 Creative, communicative, and product-minded &mdash; driven to create experiences that go beyond the code.
               </GradientText>
               <div className="mt-7 flex flex-wrap justify-center gap-3 sm:mt-9">
-                <button
-                  type="button"
-                  onClick={() => goToSection(ABOUT_SECTION_INDEX)}
-                  className="group inline-flex min-h-12 items-center gap-3 border-2 border-zinc-100 bg-zinc-100 px-5 py-3 text-sm font-bold text-zinc-950 transition-transform duration-300 ease-out hover:bg-zinc-950 hover:text-zinc-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-zinc-100"
-                >
-                  About me
-                </button>
-                <a
-                  href="#contact"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    goToSection(CONTACT_SECTION_INDEX);
-                  }}
-                  className="inline-flex min-h-12 items-center gap-3 border-2 border-zinc-500 px-5 py-3 text-sm font-bold text-zinc-100 transition-colors duration-300 hover:border-zinc-100 hover:bg-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-zinc-100"
-                >
-                  Contact me
-                </a>
+                <BrutalButton onClick={() => goToSection(ABOUT_SECTION_INDEX)}>About me</BrutalButton>
+                <OutlineButton onClick={() => goToSection(CONTACT_SECTION_INDEX)}>Contact me</OutlineButton>
               </div>
             </div>
           </Reveal>
