@@ -17,6 +17,7 @@ interface GradientTextProps {
   direction?: 'horizontal' | 'vertical' | 'diagonal';
   pauseOnHover?: boolean;
   yoyo?: boolean;
+  isActive?: boolean;
 }
 
 export default function GradientText({
@@ -28,6 +29,7 @@ export default function GradientText({
   direction = 'horizontal',
   pauseOnHover = false,
   yoyo = true,
+  isActive = true,
 }: GradientTextProps) {
   const prefersReducedMotion = useReducedMotion();
   const [isPaused, setIsPaused] = useState(false);
@@ -36,7 +38,7 @@ export default function GradientText({
   const lastTimeRef = useRef<number | null>(null);
 
   const animationDuration = animationSpeed * 1000;
-  const isDisabled = prefersReducedMotion || animationDuration <= 0;
+  const isDisabled = prefersReducedMotion || animationDuration <= 0 || !isActive;
 
   useAnimationFrame((time) => {
     if (isDisabled || isPaused) {

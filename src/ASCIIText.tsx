@@ -225,6 +225,7 @@ class CanvAscii {
   renderer!: THREE.WebGLRenderer;
   filter!: AsciiFilter;
   animationFrameId = 0;
+  isRunning = false;
 
   constructor(
     private options: CanvAsciiOptions,
@@ -306,7 +307,14 @@ class CanvAscii {
   }
 
   load() {
+    if (this.isRunning) return;
+    this.isRunning = true;
     this.animate();
+  }
+
+  pause() {
+    this.isRunning = false;
+    cancelAnimationFrame(this.animationFrameId);
   }
 
   onMouseMove(event: MouseEvent | TouchEvent) {
@@ -322,6 +330,7 @@ class CanvAscii {
 
   animate() {
     const animateFrame = () => {
+      if (!this.isRunning) return;
       this.animationFrameId = requestAnimationFrame(animateFrame);
       this.render();
     };
@@ -331,8 +340,6 @@ class CanvAscii {
   render() {
     const time = Date.now() * 0.001;
 
-    this.textCanvas.render();
-    this.texture.needsUpdate = true;
     this.material.uniforms.uTime.value = Math.sin(time);
     this.updateRotation();
     this.filter.render(this.scene, this.camera);
@@ -369,6 +376,7 @@ interface ASCIITextProps {
   textColor?: string;
   planeBaseHeight?: number;
   enableWaves?: boolean;
+  isActive?: boolean;
   className?: string;
 }
 
@@ -379,6 +387,7 @@ export default function ASCIIText({
   textColor = '#f4f4f5',
   planeBaseHeight = 9,
   enableWaves = true,
+  isActive = true,
   className = '',
 }: ASCIITextProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -413,7 +422,7 @@ export default function ASCIIText({
       }
 
       asciiRef.current = instance;
-      instance.load();
+      if (isActive) instance.load();
 
       resizeObserver = new ResizeObserver(([entry]) => {
         if (!entry || !asciiRef.current) return;
@@ -434,6 +443,17 @@ export default function ASCIIText({
       asciiRef.current = null;
     };
   }, [text, asciiFontSize, textFontSize, textColor, planeBaseHeight, enableWaves]);
+
+  useEffect(() => {
+    const instance = asciiRef.current;
+    if (!instance) return;
+
+    if (isActive) {
+      instance.load();
+    } else {
+      instance.pause();
+    }
+  }, [isActive]);
 
   return (
     <div

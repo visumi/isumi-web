@@ -3,6 +3,8 @@ import { gsap } from 'gsap';
 
 const MEDIA_QUERIES = ['(min-width:1500px)', '(min-width:1000px)', '(min-width:640px)'];
 const MEDIA_VALUES = [3, 3, 2];
+const MOBILE_QUERY = ['(min-width:640px)'];
+const MOBILE_VALUES = [0];
 
 const useMedia = (queries: string[], values: number[], defaultValue: number): number => {
   const get = () => {
@@ -40,19 +42,6 @@ const useMeasure = <T extends HTMLElement>() => {
   }, []);
 
   return [ref, size] as const;
-};
-
-const preloadImages = async (urls: string[]): Promise<void> => {
-  await Promise.all(
-    urls.map(
-      (src) =>
-        new Promise<void>((resolve) => {
-          const img = new Image();
-          img.src = src;
-          img.onload = img.onerror = () => resolve();
-        }),
-    ),
-  );
 };
 
 interface Item {
@@ -93,8 +82,8 @@ export default function Masonry({
   colorShiftOnHover = false,
 }: MasonryProps) {
   const columns = useMedia(MEDIA_QUERIES, MEDIA_VALUES, 1);
+  const isMobile = useMedia(MOBILE_QUERY, MOBILE_VALUES, 1) === 1;
   const [containerRef, { width }] = useMeasure<HTMLDivElement>();
-  const [imagesReady, setImagesReady] = useState(false);
   const hasMounted = useRef(false);
   const prefersReducedMotion =
     typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -128,11 +117,6 @@ export default function Masonry({
     }
   };
 
-  useEffect(() => {
-    setImagesReady(false);
-    preloadImages(items.map((item) => item.img)).then(() => setImagesReady(true));
-  }, [items]);
-
   const grid = useMemo<GridItem[]>(() => {
     if (!width) return [];
 
@@ -153,7 +137,8 @@ export default function Masonry({
   }, [columns, items, width]);
 
   useLayoutEffect(() => {
-    if (!imagesReady) return;
+    if (isMobile) return;
+    if (!grid.length) return;
 
     grid.forEach((item, index) => {
       const selector = `[data-key="${item.id}"]`;
@@ -193,7 +178,7 @@ export default function Masonry({
     });
 
     hasMounted.current = true;
-  }, [grid, imagesReady, stagger, animateFrom, blurToFocus, duration, ease, prefersReducedMotion]);
+  }, [grid, isMobile, stagger, animateFrom, blurToFocus, duration, ease, prefersReducedMotion]);
 
   const handleMouseEnter = (id: string, element: HTMLElement) => {
     if (scaleOnHover && !prefersReducedMotion) {
@@ -224,6 +209,32 @@ export default function Masonry({
       if (overlay) gsap.to(overlay, { opacity: 0, duration: 0.3 });
     }
   };
+
+  if (isMobile) {
+    const mobileItems = items.slice(0, 6);
+
+    return (
+      <div ref={containerRef} className="grid h-full w-full grid-cols-3 grid-rows-3 gap-3 overflow-hidden">
+        {mobileItems.map((item, index) => (
+          <span
+            key={item.id}
+            className={`relative block overflow-hidden rounded-xl bg-zinc-300 ${index === 0 ? 'col-span-2 row-span-2' : ''}`}
+          >
+            <img
+              src={item.img}
+              alt={item.label ?? ''}
+              loading="eager"
+              decoding="async"
+              draggable={false}
+              className="absolute inset-0 h-full w-full object-cover opacity-80 blur-[0.35px] grayscale mix-blend-multiply"
+            />
+            <span className="absolute inset-0 bg-zinc-100/20 mix-blend-screen" />
+            {colorShiftOnHover && <span className="color-overlay pointer-events-none absolute inset-0 bg-zinc-100 opacity-0" />}
+          </span>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div ref={containerRef} className="relative h-full w-full overflow-hidden">

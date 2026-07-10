@@ -19,6 +19,7 @@ interface ShinyTextProps {
   pauseOnHover?: boolean;
   direction?: 'left' | 'right';
   delay?: number;
+  isActive?: boolean;
 }
 
 export default function ShinyText({
@@ -33,6 +34,7 @@ export default function ShinyText({
   pauseOnHover = false,
   direction = 'left',
   delay = 0,
+  isActive = true,
 }: ShinyTextProps) {
   const prefersReducedMotion = useReducedMotion();
   const [isPaused, setIsPaused] = useState(false);
@@ -43,7 +45,7 @@ export default function ShinyText({
 
   const animationDuration = speed * 1000;
   const delayDuration = delay * 1000;
-  const isDisabled = disabled || prefersReducedMotion;
+  const isDisabled = disabled || prefersReducedMotion || !isActive;
 
   useAnimationFrame((time) => {
     if (isDisabled || isPaused) {

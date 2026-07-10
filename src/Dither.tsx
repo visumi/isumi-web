@@ -194,6 +194,7 @@ interface DitheredWavesProps {
   disableAnimation: boolean;
   enableMouseInteraction: boolean;
   mouseRadius: number;
+  isActive: boolean;
 }
 
 function DitheredWaves({
@@ -206,6 +207,7 @@ function DitheredWaves({
   disableAnimation,
   enableMouseInteraction,
   mouseRadius,
+  isActive,
 }: DitheredWavesProps) {
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const mouseRef = useRef(new THREE.Vector2());
@@ -234,7 +236,7 @@ function DitheredWaves({
   }, [size, gl]);
 
   useEffect(() => {
-    if (!enableMouseInteraction) return;
+    if (!enableMouseInteraction || !isActive) return;
 
     const handlePointerMove = (event: PointerEvent) => {
       const rect = gl.domElement.getBoundingClientRect();
@@ -248,11 +250,13 @@ function DitheredWaves({
     return () => {
       window.removeEventListener('pointermove', handlePointerMove);
     };
-  }, [enableMouseInteraction, gl]);
+  }, [enableMouseInteraction, gl, isActive]);
 
   const prevColor = useRef([...waveColor]);
 
   useFrame(({ clock, invalidate }) => {
+    if (!isActive) return;
+
     const uniforms = waveUniformsRef.current;
 
     if (!disableAnimation) {
@@ -313,6 +317,7 @@ interface DitherProps {
   disableAnimation?: boolean;
   enableMouseInteraction?: boolean;
   mouseRadius?: number;
+  isActive?: boolean;
 }
 
 export default function Dither({
@@ -325,14 +330,15 @@ export default function Dither({
   disableAnimation = false,
   enableMouseInteraction = true,
   mouseRadius = 1,
+  isActive = true,
 }: DitherProps) {
   return (
     <Canvas
       className="relative h-full w-full"
       camera={{ position: [0, 0, 6] }}
       dpr={1}
-      frameloop="always"
-      gl={{ antialias: true, preserveDrawingBuffer: true }}
+      frameloop={isActive && !disableAnimation ? 'always' : 'demand'}
+      gl={{ antialias: false }}
     >
       <DitheredWaves
         waveSpeed={waveSpeed}
@@ -344,6 +350,7 @@ export default function Dither({
         disableAnimation={disableAnimation}
         enableMouseInteraction={enableMouseInteraction}
         mouseRadius={mouseRadius}
+        isActive={isActive}
       />
     </Canvas>
   );
