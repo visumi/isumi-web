@@ -90,14 +90,14 @@ const aboutPanels = [
     visual: 'portrait',
   },
   {
-    id: 'path',
-    eyebrow: 'PATH',
-    title: 'Technology as a way to expand imagination.',
+    id: 'career',
+    eyebrow: 'CAREER',
+    title: 'Path',
     paragraphs: [
       'Bringing technology together with creativity, culture, and human experiences is what keeps me motivated to keep learning, creating, and evolving.',
       'As an Artificial Intelligence enthusiast, I am especially interested in how emerging technologies can expand creativity, enhance digital experiences, and help shape more meaningful products.',
     ],
-    visual: 'signal',
+    visual: 'career',
   },
   {
     id: 'perspective',
@@ -108,6 +108,61 @@ const aboutPanels = [
       'I keep a mental archive of places, conversations, textures, moods, and visual details that eventually find their way into how I think and make things.',
     ],
     visual: 'masonry',
+  },
+] as const;
+
+const careerTimeline = [
+  {
+    company: 'PicPay',
+    period: 'APR 2024 — NOW',
+    role: 'Engineer Frontend Senior',
+    detail: 'Building financial product experiences with React and Next.js, balancing dense workflows with interfaces that stay clear at speed.',
+  },
+  {
+    company: 'Banco Original',
+    period: 'DEC 2021 — MAY 2024',
+    role: 'Analista de Sistemas Pleno',
+    detail: 'Developed Angular applications and design-system foundations that brought consistency to complex banking journeys.',
+  },
+  {
+    company: 'Enforce',
+    period: 'SEP 2020 — DEC 2021',
+    role: 'Desenvolvedor web front-end',
+    detail: 'Created product interfaces in Angular, translating operational requirements into responsive tools for everyday decisions.',
+  },
+  {
+    company: 'LARCOM / UNICAMP',
+    period: 'MAR 2020 — SEP 2020',
+    role: 'Desenvolvedor Netsuite',
+    detail: 'Supported NetSuite development with JavaScript and TypeScript, connecting academic research needs to practical systems.',
+  },
+] as const;
+
+const careerProjects = [
+  {
+    title: 'Financial journeys at scale',
+    description: 'Responsive product flows designed for high-frequency financial decisions, with clarity kept intact across dense interfaces.',
+    meta: 'React · Next.js · Product design',
+  },
+  {
+    title: 'Design system foundations',
+    description: 'A reusable interface language that made complex banking experiences more consistent, faster to build, and easier to evolve.',
+    meta: 'Angular · Components · Tokens',
+  },
+  {
+    title: 'Operational dashboards',
+    description: 'Decision tools that turn layered operational data into a focused interface for the people who act on it every day.',
+    meta: 'Frontend architecture · UX',
+  },
+  {
+    title: 'Platform migrations',
+    description: 'Migration work planned around continuity: modernizing UI foundations while protecting the workflows users already depend on.',
+    meta: 'Systems · Performance · Delivery',
+  },
+  {
+    title: 'Creative product prototypes',
+    description: 'Interactive studies that use motion and code as a way to test ideas, explain systems, and make digital products memorable.',
+    meta: 'Creative code · Motion · WebGL',
   },
 ] as const;
 
@@ -148,6 +203,8 @@ export {
   aboutImages,
   aboutMenuItems,
   aboutPanels,
+  careerProjects,
+  careerTimeline,
   principles,
   projects,
 };

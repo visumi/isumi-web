@@ -1,9 +1,74 @@
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { useCallback, useEffect } from 'react';
+import {
+  IconBrandAngular,
+  IconBrandJavascript,
+  IconBrandNextjs,
+  IconBrandReact,
+  IconBrandTailwind,
+  IconBrandTypescript,
+} from '@tabler/icons-react';
+import CircularGallery from '../CircularGallery';
 import LineSidebar from '../LineSidebar';
+import { LogoLoop } from '../LogoLoop';
 import Masonry from '../Masonry';
-import { aboutImages, aboutMenuItems, aboutPanels } from '../portfolioData';
+import { aboutImages, aboutMenuItems, aboutPanels, careerProjects, careerTimeline } from '../portfolioData';
 import RotatingText from '../RotatingText';
+import ShapeGrid from '../ShapeGrid';
+
+const frontendTechnologies = [
+  { id: 'react', icon: <IconBrandReact className="size-6" /> },
+  { id: 'nextjs', icon: <IconBrandNextjs className="size-6" /> },
+  { id: 'angular', icon: <IconBrandAngular className="size-6" /> },
+  { id: 'typescript', icon: <IconBrandTypescript className="size-6" /> },
+  { id: 'javascript', icon: <IconBrandJavascript className="size-6" /> },
+  { id: 'tailwind', icon: <IconBrandTailwind className="size-6" /> },
+];
+
+function CareerTimeline() {
+  return (
+    <div className="min-w-0">
+      <LogoLoop items={frontendTechnologies} ariaLabel="Tecnologias de frontend" />
+      <div className="mt-7 sm:mt-8">
+        <ol className="grid gap-y-7 sm:gap-y-9">
+          {careerTimeline.map((job, index) => (
+            <li key={job.company} className="relative flex min-h-44 flex-col border-t-2 border-zinc-950 pt-6 sm:min-h-48 sm:pt-7">
+              <span className="absolute left-0 top-0 block size-5 -translate-y-1/2 border-2 border-zinc-950 bg-zinc-100" aria-hidden="true">
+                <span className={`absolute inset-0 m-auto block size-2 ${index === 0 ? 'bg-zinc-950' : 'bg-zinc-400'}`} />
+              </span>
+              <p className="text-[10px] font-bold tracking-[0.08em] text-zinc-500">{job.period}</p>
+              <h3 className="mt-2 text-sm font-bold leading-tight text-zinc-950">{job.company}</h3>
+              <p className="mt-1 text-xs font-bold leading-snug text-zinc-700">{job.role}</p>
+              <p className="mt-4 max-w-[36ch] text-xs leading-5 text-zinc-600">{job.detail}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  );
+}
+
+function CareerShowcase({ reduced }: { reduced: boolean | null }) {
+  return (
+    <div className="flex h-full min-h-0 items-center justify-end">
+      <section className="relative aspect-square w-full max-w-[20rem] overflow-hidden rounded-xl border-2 border-zinc-950 bg-zinc-950 text-zinc-100" aria-label="Projetos selecionados">
+        <div className="absolute inset-0 opacity-80" aria-hidden="true">
+          <ShapeGrid animated={!reduced} borderColor="#3f3f46" hoverFillColor="#52525b" hoverTrailAmount={5} speed={0.18} squareSize={42} />
+        </div>
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-center justify-between border-b border-zinc-700 bg-zinc-950/90 px-4 py-3 text-[10px] font-bold tracking-[0.1em] text-zinc-300 sm:px-5">
+          <span>SELECTED PROJECTS</span>
+          <span>DRAG / SCROLL</span>
+        </div>
+        <div className="absolute inset-x-0 bottom-0 z-10 border-t border-zinc-700 bg-zinc-950/90 px-4 py-3 text-[10px] font-bold tracking-[0.1em] text-zinc-400 sm:px-5">
+          05 CASE STUDIES
+        </div>
+        <div className="absolute inset-0 z-[1] px-4 pb-10 pt-11 sm:px-5 sm:pb-11 sm:pt-12">
+          <CircularGallery items={careerProjects} reducedMotion={Boolean(reduced)} />
+        </div>
+      </section>
+    </div>
+  );
+}
 
 function AboutPortrait() {
   return (
@@ -27,13 +92,12 @@ function AboutPortrait() {
       <div className="absolute left-[4%] top-[3%] bg-zinc-950 px-3 py-2 text-[10px] font-bold tracking-[0.14em] text-zinc-100 sm:text-xs">
         VINICIUS / ISUMI
       </div>
-      <div className="absolute bottom-[5%] right-0 size-8 bg-zinc-100" aria-hidden="true" />
       <div className="absolute bottom-[5%] left-[4%] h-2 w-[36%] bg-zinc-100" aria-hidden="true" />
     </figure>
   );
 }
 
-function AboutVisual({ kind }: { kind: string }) {
+function AboutVisual({ kind, reduced }: { kind: string; reduced: boolean | null }) {
   if (kind === 'portrait') {
     return <AboutPortrait />;
   }
@@ -54,6 +118,10 @@ function AboutVisual({ kind }: { kind: string }) {
         />
       </div>
     );
+  }
+
+  if (kind === 'career') {
+    return <CareerShowcase reduced={reduced} />;
   }
 
   if (kind === 'signal') {
@@ -131,10 +199,10 @@ function AboutSection({
   return (
     <section
       id="about"
-      className="grid h-[100dvh] max-h-[100dvh] overflow-hidden border-y-2 border-zinc-100 bg-zinc-100 text-zinc-950"
+      className="relative grid h-[100dvh] max-h-[100dvh] overflow-hidden border-y-2 border-zinc-100 bg-zinc-100 text-zinc-950"
     >
-      <div className="mx-auto grid h-full w-full max-w-[90rem] grid-rows-[auto_auto_minmax(0,1fr)] gap-3 px-5 py-5 sm:grid-rows-[auto_auto_minmax(0,1fr)] sm:gap-5 sm:px-8 sm:py-8 lg:grid-cols-[16rem_minmax(0,0.82fr)_minmax(0,1.18fr)] lg:grid-rows-1 lg:items-stretch lg:gap-8 lg:py-10 xl:grid-cols-[17rem_minmax(0,0.78fr)_minmax(0,1.22fr)]">
-        <div className="flex items-center justify-between gap-4 lg:justify-start lg:-ml-10 xl:-ml-16">
+      <div className="pointer-events-none absolute inset-0 z-20 hidden lg:block">
+        <div className="relative mx-auto h-full max-w-[90rem] px-8 py-10">
           <LineSidebar
             items={aboutMenuItems}
             activeIndex={activePanel}
@@ -148,8 +216,12 @@ function AboutSection({
             itemGap={20}
             fontSize={1.1}
             onItemClick={(index) => updatePanel(index)}
-            className="hidden lg:flex"
+            className="pointer-events-auto absolute left-8 top-1/2 -translate-y-1/2 lg:-translate-x-10 xl:-translate-x-16"
           />
+        </div>
+      </div>
+      <div className="mx-auto grid h-full w-full max-w-[90rem] grid-rows-[auto_auto_minmax(0,1fr)] gap-3 px-5 py-5 sm:grid-rows-[auto_auto_minmax(0,1fr)] sm:gap-5 sm:px-8 sm:py-8 lg:grid-cols-[16rem_minmax(0,0.82fr)_minmax(0,1.18fr)] lg:grid-rows-1 lg:items-stretch lg:gap-8 lg:py-10 xl:grid-cols-[17rem_minmax(0,0.78fr)_minmax(0,1.22fr)]">
+        <div className="flex items-center justify-between gap-4 lg:block">
           <div className="flex w-full gap-2 lg:hidden" aria-label="About sections">
             {aboutMenuItems.map((item, index) => (
               <button
@@ -194,11 +266,15 @@ function AboutSection({
                   panel.title
                 )}
               </h2>
-              <div className="about-prose mt-5 max-w-xl space-y-3 text-pretty text-xs leading-6 text-zinc-700 sm:mt-6 sm:space-y-4 sm:text-base sm:leading-8">
-                {panel.paragraphs.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
-                ))}
-              </div>
+              {panel.id === 'career' ? (
+                <CareerTimeline />
+              ) : (
+                <div className="about-prose mt-5 max-w-xl space-y-3 text-pretty text-xs leading-6 text-zinc-700 sm:mt-6 sm:space-y-4 sm:text-base sm:leading-8">
+                  {panel.paragraphs.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                </div>
+              )}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -219,7 +295,7 @@ function AboutSection({
               transition={{ duration: 0.52, ease: [0.16, 1, 0.3, 1] }}
               className="h-full min-h-0"
             >
-              <AboutVisual kind={panel.visual} />
+              <AboutVisual kind={panel.visual} reduced={reduced} />
             </motion.div>
           </AnimatePresence>
         </div>
