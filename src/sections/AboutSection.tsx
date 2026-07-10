@@ -1,5 +1,5 @@
 import { useReducedMotion } from 'motion/react';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import LineSidebar from '../LineSidebar';
 import { aboutImages, aboutMenuItems, aboutPanels } from '../portfolioData';
 import { AboutPanelContent } from './about/AboutPanelContent';
@@ -17,6 +17,7 @@ function AboutSection({
   onPanelChange: (index: number) => void;
 }) {
   const reduced = useReducedMotion();
+  const [portraitStatus, setPortraitStatus] = useState<'loading' | 'ready' | 'error'>('loading');
 
   useEffect(() => {
     const preloadImages = () => {
@@ -30,6 +31,34 @@ function AboutSection({
 
     const timeout = window.setTimeout(preloadImages, 700);
     return () => window.clearTimeout(timeout);
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const image = new Image();
+
+    const setStatus = (status: 'ready' | 'error') => {
+      if (!cancelled) setPortraitStatus(status);
+    };
+
+    image.decoding = 'async';
+    image.onload = () => {
+      if (typeof image.decode !== 'function') {
+        setStatus('ready');
+        return;
+      }
+
+      void image.decode().then(
+        () => setStatus('ready'),
+        () => setStatus('ready'),
+      );
+    };
+    image.onerror = () => setStatus('error');
+    image.src = '/about-portrait.jpeg';
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const updatePanel = useCallback(
@@ -89,7 +118,7 @@ function AboutSection({
         </div>
 
         <AboutPanelContent panel={panel} direction={direction} isActive={isActive} reduced={reduced} />
-        <AboutPanelVisual panel={panel} direction={direction} isActive={isActive} reduced={reduced} />
+        <AboutPanelVisual panel={panel} direction={direction} isActive={isActive} reduced={reduced} portraitStatus={portraitStatus} />
       </div>
     </section>
   );
