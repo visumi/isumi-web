@@ -383,6 +383,8 @@ export default function ASCIIText({
 }: ASCIITextProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const asciiRef = useRef<CanvAscii | null>(null);
+  const resolvedClassName =
+    className.trim() || 'h-[min(64vh,560px)] w-[clamp(300px,31vw,420px)]';
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -436,7 +438,7 @@ export default function ASCIIText({
   return (
     <div
       ref={containerRef}
-      className={`relative h-[min(64vh,560px)] w-[clamp(300px,31vw,420px)] ${className}`}
+      className={`relative ${resolvedClassName}`}
     />
   );
 }

@@ -316,7 +316,7 @@ interface DitherProps {
 }
 
 export default function Dither({
-  waveSpeed = 0.05,
+  waveSpeed = 0.02,
   waveFrequency = 3,
   waveAmplitude = 0.3,
   waveColor = [0.5, 0.5, 0.5],
