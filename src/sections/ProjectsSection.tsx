@@ -99,7 +99,7 @@ function ProjectsSection() {
           </div>
         </Reveal>
 
-        <div className="mt-8 grid auto-rows-fr gap-3 sm:grid-cols-3 sm:gap-4 lg:mt-10">
+        <div className="mt-8 grid auto-rows-fr gap-3 sm:grid-cols-2 sm:gap-4 lg:mt-10 lg:grid-cols-3">
           {projects.map((project, index) => <Reveal key={project.index} delay={0.08 + index * 0.08} className="h-full"><ProjectCard project={project} /></Reveal>)}
         </div>
       </div>

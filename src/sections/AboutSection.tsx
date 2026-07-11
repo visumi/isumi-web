@@ -65,11 +65,11 @@ function AboutSection({
             itemGap={20}
             fontSize={1.1}
             onItemClick={(index) => updatePanel(index)}
-            className="pointer-events-auto absolute left-8 top-1/2 -translate-y-1/2 lg:-translate-x-10 xl:-translate-x-16"
+            className="pointer-events-auto absolute left-8 top-1/2 -translate-y-1/2 lg:-translate-x-16"
           />
         </div>
       </div>
-      <div className="mx-auto grid h-full w-full max-w-[90rem] grid-rows-[auto_minmax(0,1fr)] gap-3 px-5 py-5 sm:grid-rows-[auto_minmax(0,1fr)] sm:gap-5 sm:px-8 sm:py-8 lg:grid-cols-[16rem_minmax(0,0.82fr)_minmax(0,1.18fr)] lg:grid-rows-1 lg:items-stretch lg:gap-8 lg:py-10 xl:grid-cols-[17rem_minmax(0,0.78fr)_minmax(0,1.22fr)]">
+      <div className="mx-auto grid h-full w-full max-w-[90rem] grid-rows-[auto_minmax(0,1fr)] gap-3 px-5 py-5 sm:grid-rows-[auto_minmax(0,1fr)] sm:gap-5 sm:px-8 sm:py-8 lg:grid-cols-[13rem_minmax(0,1.1fr)_minmax(0,0.9fr)] lg:grid-rows-1 lg:items-stretch lg:gap-6 lg:py-10 xl:grid-cols-[17rem_minmax(0,0.78fr)_minmax(0,1.22fr)]">
         <div className="hidden lg:block" aria-hidden="true" />
         <AboutPanelContent panel={panel} direction={direction} isActive={isActive} reduced={reduced} />
         <AboutPanelVisual panel={panel} direction={direction} isActive={isActive} reduced={reduced} />

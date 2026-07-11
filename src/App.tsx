@@ -1,6 +1,5 @@
 import { motion, useReducedMotion } from 'motion/react';
-import { useCallback, useRef, useState } from 'react';
-import type { TouchEvent, WheelEvent } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ABOUT_SECTION_INDEX, SECTION_COUNT, aboutPanels } from './portfolioData';
 import { AboutSection } from './sections/AboutSection';
 import { ContactSection } from './sections/ContactSection';
@@ -12,6 +11,7 @@ function App() {
   const [activeSection, setActiveSection] = useState(0);
   const [aboutPanel, setAboutPanel] = useState(0);
   const [aboutDirection, setAboutDirection] = useState(1);
+  const mainRef = useRef<HTMLElement>(null);
   const navigationLockedRef = useRef(false);
   const touchStartYRef = useRef<number | null>(null);
 
@@ -67,41 +67,46 @@ function App() {
     [navigateStep, reduced],
   );
 
-  const handleWheel = useCallback(
-    (event: WheelEvent<HTMLElement>) => {
+  useEffect(() => {
+    const main = mainRef.current;
+    if (!main) return;
+
+    const handleWheel = (event: WheelEvent) => {
       event.preventDefault();
       handleNavigationDelta(event.deltaY);
-    },
-    [handleNavigationDelta],
-  );
-
-  const handleTouchStart = useCallback((event: TouchEvent<HTMLElement>) => {
-    touchStartYRef.current = event.touches[0]?.clientY ?? null;
-  }, []);
-
-  const handleTouchMove = useCallback((event: TouchEvent<HTMLElement>) => {
-    event.preventDefault();
-  }, []);
-
-  const handleTouchEnd = useCallback(
-    (event: TouchEvent<HTMLElement>) => {
+    };
+    const handleTouchStart = (event: TouchEvent) => {
+      touchStartYRef.current = event.touches[0]?.clientY ?? null;
+    };
+    const handleTouchMove = (event: TouchEvent) => {
+      event.preventDefault();
+    };
+    const handleTouchEnd = (event: TouchEvent) => {
       if (touchStartYRef.current === null) return;
 
       const endY = event.changedTouches[0]?.clientY ?? touchStartYRef.current;
       const delta = touchStartYRef.current - endY;
       touchStartYRef.current = null;
       handleNavigationDelta(delta);
-    },
-    [handleNavigationDelta],
-  );
+    };
+
+    main.addEventListener('wheel', handleWheel, { passive: false });
+    main.addEventListener('touchstart', handleTouchStart, { passive: true });
+    main.addEventListener('touchmove', handleTouchMove, { passive: false });
+    main.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+    return () => {
+      main.removeEventListener('wheel', handleWheel);
+      main.removeEventListener('touchstart', handleTouchStart);
+      main.removeEventListener('touchmove', handleTouchMove);
+      main.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [handleNavigationDelta]);
 
   return (
     <main
-      className="h-[100dvh] overflow-hidden bg-zinc-950 text-zinc-100"
-      onWheel={handleWheel}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
+      ref={mainRef}
+      className="h-[100dvh] select-none overflow-hidden bg-zinc-950 text-zinc-100"
     >
       <motion.div
         className="h-full"
