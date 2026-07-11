@@ -42,10 +42,13 @@ const projects = [
 
 function ProjectCard({ project }: { project: (typeof projects)[number] }) {
   return (
-    <BorderGlow className="group">
-      <article className="relative flex h-full min-h-72 flex-col p-5 transition-[background-color,transform] duration-500 ease-out sm:min-h-80 sm:p-6">
+    <BorderGlow className="group max-sm:!h-auto">
+      <article className="relative flex h-full min-h-72 flex-col p-5 transition-[background-color,transform] duration-500 ease-out max-sm:!h-auto max-sm:!min-h-0 max-sm:!p-4 sm:min-h-80 sm:p-6">
       <div className="flex items-start justify-between gap-4">
-        <span className="text-xs font-bold text-zinc-500 transition-colors duration-300 group-hover:text-zinc-300">{project.index}</span>
+        <div className="flex min-w-0 items-start gap-4">
+          <span className="pt-1 text-xs font-bold text-zinc-500 transition-colors duration-300 group-hover:text-zinc-300">{project.index}</span>
+          <h3 className="max-w-[13ch] text-balance text-2xl font-bold leading-[0.96] text-zinc-100 sm:hidden">{project.title}</h3>
+        </div>
         <a
           href={project.githubUrl}
           target="_blank"
@@ -57,12 +60,12 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
         </a>
       </div>
 
-      <div className="mt-auto">
-        <h3 className="min-h-[2rem] max-w-[13ch] text-balance text-2xl font-bold leading-[0.96] text-zinc-100 sm:min-h-[3.6rem] sm:text-3xl">{project.title}</h3>
-        <p className="mt-4 h-24 max-w-[33ch] overflow-hidden text-pretty text-xs leading-6 text-zinc-400 transition-colors duration-300 group-hover:text-zinc-300 sm:h-28 sm:text-sm sm:leading-7">{project.description}</p>
+      <div className="mt-0 sm:mt-auto">
+        <h3 className="hidden min-h-[3.6rem] max-w-[13ch] text-balance text-3xl font-bold leading-[0.96] text-zinc-100 sm:block">{project.title}</h3>
+        <p className="mt-4 h-24 max-w-[33ch] overflow-hidden text-pretty text-xs leading-6 text-zinc-400 transition-colors duration-300 group-hover:text-zinc-300 max-sm:!mt-0 max-sm:!h-18 sm:h-28 sm:text-sm sm:leading-7">{project.description}</p>
       </div>
 
-      <div className="mt-6 flex items-center justify-between border-t border-zinc-800 pt-4">
+      <div className="mt-6 flex items-center justify-between border-t border-zinc-800 pt-4 max-sm:!mt-3 max-sm:!pt-3">
         <ul className="flex items-center gap-3" aria-label={`Tecnologias utilizadas em ${project.title}`}>
           {project.technologies.map(technology => {
             const Icon = technology.icon;
@@ -99,8 +102,8 @@ function ProjectsSection() {
           </div>
         </Reveal>
 
-        <div className="mt-8 grid auto-rows-fr gap-3 sm:grid-cols-2 sm:gap-4 lg:mt-10 lg:grid-cols-3">
-          {projects.map((project, index) => <Reveal key={project.index} delay={0.08 + index * 0.08} className="h-full"><ProjectCard project={project} /></Reveal>)}
+        <div className="mt-8 grid auto-rows-fr gap-3 max-sm:!block max-sm:!flex-none max-sm:space-y-3 sm:grid-cols-2 sm:gap-4 lg:mt-10 lg:grid-cols-3">
+          {projects.map((project, index) => <Reveal key={project.index} delay={0.08 + index * 0.08} className="h-full max-sm:!h-auto"><ProjectCard project={project} /></Reveal>)}
         </div>
       </div>
     </section>
