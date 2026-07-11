@@ -9,7 +9,7 @@ function AboutPortrait() {
     <figure className="relative h-full min-h-36 overflow-hidden border-2 border-zinc-950 bg-zinc-950 sm:min-h-44 lg:min-h-0">
       <div
         aria-hidden="true"
-        className="absolute inset-x-[8%] -bottom-[10%] top-[4%] border-2 border-zinc-100"
+        className="absolute inset-x-[8%] -bottom-[10%] top-[4%] border-2 border-l-0 border-zinc-100"
         style={{ clipPath: 'polygon(12% 0, 100% 0, 100% 78%, 79% 78%, 79% 100%, 0 100%, 0 18%)' }}
       />
       <div

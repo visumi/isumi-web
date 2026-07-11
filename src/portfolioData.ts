@@ -170,9 +170,9 @@ const careerProjects = [
   },
 ] as const;
 
-const SECTION_COUNT = 5;
+const SECTION_COUNT = 4;
 const ABOUT_SECTION_INDEX = 1;
-const CONTACT_SECTION_INDEX = 4;
+const CONTACT_SECTION_INDEX = 3;
 
 const projects = [
   {

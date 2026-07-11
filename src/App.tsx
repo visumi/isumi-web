@@ -5,7 +5,6 @@ import { ABOUT_SECTION_INDEX, SECTION_COUNT, aboutPanels } from './portfolioData
 import { AboutSection } from './sections/AboutSection';
 import { ContactSection } from './sections/ContactSection';
 import { HeroSection } from './sections/HeroSection';
-import { MethodSection } from './sections/MethodSection';
 import { ProjectsSection } from './sections/ProjectsSection';
 
 function App() {
@@ -117,8 +116,7 @@ function App() {
             onPanelChange={updateAboutPanel}
           />
         <ProjectsSection />
-        <MethodSection />
-        <ContactSection />
+        <ContactSection goToSection={goToSection} />
       </motion.div>
     </main>
   );
