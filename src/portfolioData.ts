@@ -114,14 +114,14 @@ const aboutPanels = [
 const careerTimeline = [
   {
     company: 'PicPay',
-    period: 'APR 2024 — NOW',
+    period: 'SET 2023 — NOW',
     role: 'Senior Software Enginner',
     mobileDetail: 'Leading Angular strategy, migrations, and design systems.',
     detail: 'Currently acting as a Software Engineer with a strong focus on Angular, leading feature definition and technical direction, driving large-scale migrations and technology upgrades, and building scalable design systems. Actively contribute to team leadership, mentoring developers, and fostering strong engineering practices across the team.',
   },
   {
     company: 'Banco Original',
-    period: 'DEC 2021 — MAY 2024',
+    period: 'DEC 2021 — SET 2023',
     role: 'Frontend Engineer',
     mobileDetail: 'Built Java and Angular services in a microfrontend platform.',
     detail: 'Worked as a Full Stack Engineer using Java and Angular within a microfrontend architecture, contributing to customer service chat systems, modernizing legacy applications, and designing and implementing scalable microservices in Java.',
